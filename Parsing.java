@@ -18,9 +18,7 @@ public class Parsing {
         return new Iterable<MatchResult>() {
             public Iterator<MatchResult> iterator() {
                 return new Iterator<MatchResult>() {
-                    // Use a matcher internally.
                     final Matcher matcher = p.matcher(input);
-                    // Keep a match around that supports any interleaving of hasNext/next calls.
                     MatchResult pending;
 
                     public boolean hasNext() {
@@ -35,6 +33,7 @@ public class Parsing {
                         return next;
                     }
 
+                    @Override
                     public void remove(){throw new UnsupportedOperationException();}
                 };
             }
@@ -43,10 +42,40 @@ public class Parsing {
 }
 
 class Token{
-    private int LITERAL_TOKEN = 1;
-    private int PRE_UNARY_OPERATOR_TOKEN = 2;
-    private int POST_UNARY_OPERATOR_TOKEN = 4;
-    private int BINARY_OPERATOR_TOKEN = 8;
-    private int IDENTIFIER_TOKEN = 16;
-    
+    public static final int LITERAL_TOKEN = 1;
+    public static final int PRE_UNARY_OPERATOR_TOKEN = 2;
+    public static final int POST_UNARY_OPERATOR_TOKEN = 4;
+    public static final int BINARY_OPERATOR_TOKEN = 8;
+    public static final int IDENTIFIER_TOKEN = 16;
+
+    public String name;
+    public String pattern;
+    public Value value;
+
+}
+
+interface Value{}
+
+class ValNumber implements Value{
+    public final double val;
+    public ValNumber(double val){this.val = val;}
+}
+
+class ValVector implements Value{
+    public final Number[] vals;
+    public ValVector(Number[] vals){
+        this.vals = vals;
+    }
+
+    public ValVector(double ...vals){
+        this.vals = new Number[vals.length];
+        for(int i = 0; i < vals.length; i++) this.vals[i] = new Number(vals[i]);
+    }
+}
+
+class ValList<T extends Value> implements Value{
+    public final List<T> vals;
+    public ValList(T[] vals){
+        this.vals = new ArrayList<T>();
+    }
 }
