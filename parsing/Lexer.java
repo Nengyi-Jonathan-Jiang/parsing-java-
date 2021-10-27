@@ -1,6 +1,7 @@
 package parsing;
 
 import java.util.*;
+import java.util.regex.*;
 import util.*;
 
 public class Lexer{
@@ -12,26 +13,51 @@ public class Lexer{
         }
     }
     private final Vector<TokenRule> rules = new Vector<>();
-    private void addRule(String regex, String tokenName, boolean keepValue){
-        this.rules.add(new TokenRule(regex, tokenName, keepValue);
+    public void addRule(String regex, String tokenName, boolean keepValue){
+        this.rules.add(new TokenRule(regex, tokenName, keepValue));
     }
 
     public Lexer(){
         //Grouping
-        addRule("LEFT_PARENTHESES",     "\\(",      false);
-        addRule("RIGHT_PARENTHESES",    "\\)",      false);
-        addRule("LEFT_BRACKET",         "\\[",      false);
-        addRule("RIGHT_BRACKET",        "\\]",      false);
+        addRule("L_PARENTHESES", "\\(", false);
+        addRule("R_PARENTHESES", "\\)", false);
+        addRule("L_BRACKET",     "\\[", false);
+        addRule("R_BRACKET",     "\\]", false);
+        addRule("L_BRACE",       "\\{", false);
+        addRule("R_BRACE",       "\\}", false);
 
-        //Comma
-        addRule("COMMA", ",", false);
+        //Seperators
+        addRule("COMMA",     ",", false);
+        addRule("SEMICOLON", ";", false);
+
+        //Operators
+        addRule("ADD", "\\+", false);
+        addRule("SUB", "-",   false);
+        addRule("MUL", "\\*", false);
+        addRule("DIV", "/",   false);
+        addRule("POW", "\\^", false);
+        addRule("MOD", "%",   false);
+        addRule("EQL", "=",   false);
+        addRule("AND", "&",   false);
+        addRule("OR",  "|",   false);
+
+        //Keywords
+        addRule("FOR",   "for",   false);
+        addRule("WHILE", "while", false);
+        addRule("IF",    "if",    false);
         
+
         //Numbers and variables
-        addRule("NUMBER",     "\\d+|\\d*\\.\\d+",          true);
-        addRule("IDENTIFIER", "[a-zA-Z]|[a-zA-Z]_[_\\w]*", false);
+        addRule("NUM", "\\d+\\.?|\\d*\\.\\d+",      true);
+        addRule("IDT", "[a-zA-Z]+", true);
     }
 
+
+
     public Token[] parse(String s){
+        for(MatchResult m : Util.allMatches(Pattern.compile(""), s)){
+
+        }
         return new Token[]{new Token("NOTHING")};
     }
 }
