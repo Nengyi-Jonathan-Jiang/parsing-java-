@@ -8,9 +8,9 @@ public class Parsing {
     public static boolean exec(String s){
         if(s.equals("quit")) return true;
 
-        System.out.println(s);
         Token[] tokens = lexer.parse(s);
-        System.out.println(List.toString(tokens));
+        if(tokens.length > 0) System.out.println(List.toString(tokens));
+        else System.out.println(s);
         return false;
     }
 }

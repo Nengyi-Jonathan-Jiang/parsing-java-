@@ -12,8 +12,8 @@ public class Vector extends Value<Number[]>{
     public Vector(Vector v){
         super(v.value.clone());
     }
-    public Vector(List<Number> L){
-        super((Number[]) L.value.clone());
+    public Vector(List<Number> l){
+        super(l.value.clone());
     }
 
     public String toString(){
