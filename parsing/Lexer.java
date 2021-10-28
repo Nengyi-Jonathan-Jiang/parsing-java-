@@ -16,6 +16,7 @@ public class Lexer{
     public void addRule(String regex, String tokenName, boolean keepValue){
         this.rules.add(new TokenRule(regex, tokenName, keepValue));
     }
+    private Pattern re = Pattern.compile("");
 
     public Lexer(){
         //Grouping
@@ -38,25 +39,27 @@ public class Lexer{
         addRule("POW", "\\^", false);
         addRule("MOD", "%",   false);
         addRule("EQL", "=",   false);
-        addRule("AND", "&",   false);
-        addRule("OR",  "|",   false);
-
-        //Keywords
-        addRule("FOR",   "for",   false);
-        addRule("WHILE", "while", false);
-        addRule("IF",    "if",    false);
-        
+        // addRule("AND", "&",   false);
+        // addRule("OR",  "|",   false);
 
         //Numbers and variables
         addRule("NUM", "\\d+\\.?|\\d*\\.\\d+",      true);
         addRule("IDT", "[a-zA-Z]+", true);
     }
 
-
+    public void reCompilePattern(){
+        StringBuilder sb = new StringBuilder();
+        for(TokenRule tk : rules){
+            sb.append("(" + tk.regex + ")|");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        re = Pattern.compile(sb.toString());
+    }
 
     public Token[] parse(String s){
-        for(MatchResult m : Util.allMatches(Pattern.compile(""), s)){
-
+        Vector<Token> tkList = new Vector<Token>();
+        for(MatchResult m : Util.allMatches(re, s)){
+            //Token
         }
         return new Token[]{new Token("NOTHING")};
     }
