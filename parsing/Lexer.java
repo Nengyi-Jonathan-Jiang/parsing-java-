@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.regex.*;
 import util.*;
 
+//Sample input:
+//f := (($x,$y) -> (g(#x,#5) + h * [34,6][3] + (5,4) * 4 + 5))(8,9)
+
 public class Lexer{
     private static class TokenRule{
         public String regex, tokenName;
@@ -19,38 +22,12 @@ public class Lexer{
     private Pattern re = Pattern.compile("");
 
     public Lexer(){
-        //Grouping
-        addRule("L_PARENTHESES", "\\(", false);
-        addRule("R_PARENTHESES", "\\)", false);
-        addRule("L_BRACKET",     "\\[", false);
-        addRule("R_BRACKET",     "\\]", false);
-        addRule("L_BRACE",       "\\{", false);
-        addRule("R_BRACE",       "\\}", false);
-
-        //Seperators
-        addRule("COMMA",     ",", false);
-        addRule("QUESTION",  "\\?", false);
-        addRule("COLON",     ":", false);
-        addRule("SEMICOLON", ";", false);
-        addRule("UNDERSCORE","_", false);
-
-        //Operators
-        addRule("ADD", "\\+", false);
-        addRule("SUB", "-",   false);
-        addRule("MUL", "\\*", false);
-        addRule("DIV", "/",   false);
-        addRule("POW", "\\^", false);
-        addRule("MOD", "%",   false);
-        addRule("FCT", "!",   false);
-        addRule("EQL", "=",   false);
-        addRule("AND", "&",   false);
-        addRule("OR",  "\\|",   false);
-
-        //Numbers and variables
+        //NUM
         addRule("NUM", "\\d*\\.\\d+|\\d+\\.?", true);
+        //IDT
         addRule("IDT", "[a-zA-Z]+",            true);
-
-        addRule("SPACE", " +", false);
+        //ASGNEQ
+        addRule("ASGNEQ", "[\\^*/%+\\-:]=",    true);
 
         reCompilePattern();
     }
@@ -66,7 +43,7 @@ public class Lexer{
 
     public Token[] parse(String s){
         List<Token> tkList = new LinkedList<>();
-        for(MatchResult m : Util.allMatches(re, s)){
+        for(MatchResult m : Util.allMatches(re, s.strip())){
             TokenRule tkr = null;
             String group = "UNDEFINED_VALUE";
             for(int i = 0; i < rules.size(); i++){
