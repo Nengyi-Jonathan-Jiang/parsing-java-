@@ -3,6 +3,8 @@ package parsing;
 import value.*;
 
 public class Parsing {
+    private Parsing(){}
+
     private static Lexer lexer = new Lexer();
 
     public static boolean exec(String s){

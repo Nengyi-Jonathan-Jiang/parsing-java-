@@ -9,13 +9,13 @@ import util.*;
 
 public class Lexer{
     private static class TokenRule{
-        public String regex, tokenName;
-        public boolean keepValue;
+        private String regex, tokenName;
+        private boolean keepValue;
         private TokenRule(String tokenName, String regex, boolean keepValue){
             this.regex = regex; this.tokenName = tokenName; this.keepValue = keepValue;
         }
     }
-    private final Vector<TokenRule> rules = new Vector<>();
+    private final List<TokenRule> rules = new LinkedList<>();
     public void addRule(String regex, String tokenName, boolean keepValue){
         this.rules.add(new TokenRule(regex, tokenName, keepValue));
     }
@@ -28,6 +28,9 @@ public class Lexer{
         addRule("IDT", "[a-zA-Z]+",            true);
         //ASGNEQ
         addRule("ASGNEQ", "[\\^*/%+\\-:]=",    true);
+        addRule("ARROW", "->",    false);
+
+        addRule("OTHER", "[^ ]", true);
 
         reCompilePattern();
     }
@@ -52,7 +55,7 @@ public class Lexer{
                     break;
                 }
             }
-            if(tkr == null) tkList.add(new Token("UNKNOWN_TOKEN"));
+            if(tkr == null) tkList.add(new Token(group,group));
             else if(tkr.keepValue) tkList.add(new Token(tkr.tokenName, group));
             else tkList.add(new Token(tkr.tokenName));
         }
