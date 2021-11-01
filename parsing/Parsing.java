@@ -11,7 +11,10 @@ public class Parsing {
         if(s.equals("quit")) return true;
 
         Token[] tokens = lexer.parse(s);
-        if(tokens.length > 0) System.out.println(List.toString(tokens));
+        if(tokens.length > 0){
+            System.out.println(List.toString(tokens));
+            System.out.println(new Parser().parse(tokens));
+        }
         else System.out.println(s);
         return false;
     }
