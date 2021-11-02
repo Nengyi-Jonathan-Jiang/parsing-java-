@@ -11,17 +11,19 @@ public class List<T extends Value<?>> extends Value<T[]>{
     }
     
     @SuppressWarnings("unchecked")
-    public List(List<?> L){
+    public List(List<?> l){
 
-        super((T[]) L.value.clone());
+        super((T[]) l.value.clone());
     }
 
+    @Override
     public String toString(){
         StringBuilder s = new StringBuilder("[" + value[0]);
         for(int i = 1; i < value.length; i++) s.append(", " + value[i]);
         return s.toString() + "]";
     }
 
+    
     public static <V> String toString(V[] arr){
         StringBuilder s = new StringBuilder("[" + arr[0]);
         for(int i = 1; i < arr.length; i++) s.append(", " + arr[i]);
